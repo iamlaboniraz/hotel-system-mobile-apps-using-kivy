@@ -1,0 +1,721 @@
+#: import rgba kivy.utils.rgba
+#: import icon kivy.garden.iconfonts.icon
+#:import NavigationDrawer kivy.garden.navigationdrawer.NavigationDrawer
+#: import mtx kivy.metrics
+#: import DatePicker datepicker.datepicker.DatePicker
+<MainWindow>:
+    orientation:'vertical'
+    canvas.before:
+        Color:
+            rgba: [1,1,1,1]
+        Rectangle:
+            pos:self.pos
+            size:self.size
+    ScreenManager:
+        id:scrn_mngr
+        Screen:
+            name:'scrn_signin'
+            BoxLayout:
+                orientation:'vertical'
+                canvas.before:
+                    Color:
+                        rgba:rgba('#0e1574ff')
+                    Triangle:
+                        points:[0,self.size[1],self.size[0],self.size[1],0,self.size[1]-(.4*self.size[1])]
+                    Color:
+                        rgba:rgba('#0e1574c8')
+                    Triangle:
+                        points:[0,self.size[1],self.size[0],self.size[1],self.size[0],self.size[1]-(.4*self.size[1])]
+                Widget:
+                    size_hint_y:.25
+                Label:
+                    text:"%s"%icon('zmdi-account-circle')
+                    font_size:mtx.sp('154')
+                    markup:True
+                    color:rgba('#0e1574ff')
+                    size_hint_y:.3
+                BoxLayout:
+                    size_hint_y:.45
+                    orientation:'vertical'
+                    padding: [mtx.dp(20),0]
+                    FlatInput:
+                        id:si_username
+                        hint_text:'username'
+                        size_hint_y:.1
+                    Widget:
+                        size_hint_y:.1
+                    FlatInput:
+                        id:si_password
+                        hint_text:'password'
+                        size_hint_y:.1
+                        password: True
+                    Widget:
+                        size_hint_y:.2
+                    FlatButton:
+                        text:"Sign In"
+                        size_hint_y:.2
+                        on_release: root.auth_user(si_username,si_password)
+                        canvas.before:
+                            Color:
+                                rgba:rgba('#0e1574ff')
+
+                            RoundedRectangle:
+                                pos:self.pos
+                                size:self.size
+                                radius:[10]
+                    FlatButton:
+                        text:'New here?Sign up'
+                        color:rgba('#0e1574ff')
+                        size_hint_y:.1
+                        on_release:scrn_mngr.current = 'scrn_signup'
+                    Widget:
+                        size_hint_y:.1
+        Screen:
+            name:'scrn_signup'
+            BoxLayout:
+                orientation:'vertical'
+                canvas.before:
+                    Color:
+                        rgba:rgba('#0e1574ff')
+                    Rectangle:
+                        pos:self.pos
+                        size:self.size
+                    Color:
+                        rgba:rgba('#ffffff')
+                    Triangle:
+                        points:[0,self.size[1],self.size[0],self.size[1],0,self.size[1]-(.4*self.size[1])]
+                    Color:
+                        rgba:rgba('#f2f2f2')
+                    Triangle:
+                        points:[0,self.size[1],self.size[0],self.size[1],self.size[0],self.size[1]-(.4*self.size[1])]
+                Widget:
+                    size_hint_y:.25
+                Label:
+                    text:"%s"%icon('zmdi-account-circle')
+                    font_size:mtx.sp('154')
+                    markup:True
+                    color:rgba('#0e1574ff')
+                    size_hint_y:.3
+                BoxLayout:
+                    size_hint_y:.45
+                    orientation:'vertical'
+                    padding: [mtx.dp(20),0]
+                    WhiteInput:
+                        id:su_username
+                        hint_text:'username'
+                        size_hint_y:.1
+                    Widget:
+                        size_hint_y:.1
+                    WhiteInput:
+                        id:su_password
+                        hint_text:'password'
+                        size_hint_y:.1
+                        password: True
+                    Widget:
+                        size_hint_y:.2
+                    FlatButton:
+                        text:"Sign Up"
+                        size_hint_y:.2
+                        color: rgba('#0e1574ff')
+                        on_release:root.add_user(su_username,su_password)
+                        canvas.before:
+                            Color:
+                                rgba:rgba('#ffffff')
+
+                            RoundedRectangle:
+                                pos:self.pos
+                                size:self.size
+                                radius:[10]
+                    FlatButton:
+                        text:'Already registered?Sign in'
+                        color:rgba('#ffffff')
+                        size_hint_y:.1
+                        on_release:scrn_mngr.current = 'scrn_signin'
+                    Widget:
+                        size_hint_y:.1
+
+        Screen:
+            name:'scrn_main'
+            NavigationDrawer:
+                id:nav
+                anim_type:'slide_above_simple'
+                side_panel_width:.7*self.width
+                BoxLayout:
+                    id:sidenav
+                    orientation:'vertical'
+                    padding:mtx.dp(10)
+                    canvas.before:
+                        Color:
+                            rgba:rgba('#ffffff')
+                        Rectangle:
+                            pos:self.pos
+                            size:self.size
+                    ListEntry:
+                        text:'%s Reserve'%icon('zmdi-edit')
+                        markup:True
+                        color:rgba('#0e5174')
+                        on_release:
+                            nav.toggle_state()
+                            root.add_new()
+                        size_hint_y:.07
+                    Widget:
+
+                BoxLayout:
+                    orientation:'vertical'
+                    canvas.before:
+                        Color:
+                            rgba:rgba('#0e1574ff')
+                        Rectangle:
+                            pos:self.pos
+                            size:self.size
+                    BoxLayout:
+                        padding: mtx.dp(10)
+                        size_hint_y:.1
+                        FlatButton:
+                            text:icon('zmdi-apps')
+                            markup:True
+                            text_size:self.size
+                            valign:'middle'
+                            font_size:mtx.sp(24)
+                            on_release:nav.toggle_state()
+
+                    BoxLayout:
+                        orientation:'vertical'
+                        canvas.before:
+                            Color:
+                                rgba:rgba('#119cceff')
+                            RoundedRectangle:
+                                pos:self.pos
+                                size:self.size
+                                radius:[20,20,0,0]
+                        BoxLayout:
+                            size_hint_y:.4
+                            orientation:'vertical'
+                            BoxLayout:
+                                size_hint_y:.2
+                                padding:[10,0]
+                                FlatButton:
+                                    text:icon('zmdi-arrow-forward')
+                                    font_size:mtx.sp(24)
+                                    markup:True
+                                    size_hint_x:.9
+                                    on_release:scrn_mngr.current = 'scrn_today'
+                                Label:
+                                    text:"Welcome to KOKO INN"
+                                    bold:True
+                                    size_hint_x:.4
+                                    text_size:self.size
+                                    halign:'right'
+                            BoxLayout:
+                                size_hint_y:.9
+                                id:scroll_parent
+                                ScrollView:
+                                    id:sv_today
+                                    db_scroll:[True,False]
+                                    scroll_type:['content']
+                                    size_hint_y:None
+                                    height:self.parent.height
+                                    effect_cls:'ScrollEffect'
+                                    GridLayout:
+                                        id: today_wrapper
+                                        rows:1
+                                        padding:['10dp','10dp','10dp','20dp']
+                                        spacing: [mtx.dp(10)]
+                                        size: self.minimum_size
+                                        size_hint:(None,None)
+
+                                        NewButton:
+                                            on_release: root.add_new()
+                                            size_hint:(None,None)
+                                            size:[scroll_parent.width/2.4,scroll_parent.height-(.1*scroll_parent.height)]
+
+
+                        BoxLayout:
+                            size_hint_y:.6
+                            orientation:'vertical'
+                            spacing:mtx.dp(5)
+                            canvas.before:
+                                Color:
+                                    rgba:rgba('#ffffff')
+                                RoundedRectangle:
+                                    pos:self.pos
+                                    size:self.size
+                                    radius:[20,20,0,0]
+                            BoxLayout:
+                                size_hint_y:.1
+                                padding:['10dp','2dp']
+                                Label:
+                                    text:icon('zmdi-arrow-forward')
+                                    font_size:mtx.sp(18)
+                                    markup:True
+                                    size_hint_x:.7
+                                    text_size:self.size
+                                    color:rgba('#119cceff')
+                                    valign:'middle'
+
+                                Label:
+                                    text:'Best Rooms'
+                                    bold:True
+                                    size_hint_x:.3
+                                    color:rgba('#119cceff')
+                            BoxLayout:
+                                size_hint_y:.93
+                                id:upcoming_wrapper
+                                ScrollView:
+                                    size_hint_y:None
+                                    height:self.parent.height
+                                    GridLayout:
+                                        id:best_rooms
+                                        cols:1
+                                        size_hint_y:None
+                                        size:self.minimum_size
+                                        padding:['10dp']
+                                        spacing:['10dp']
+                                        BestRoom:
+                                            rooms_number:'Room Number: 101'
+                                            room_type:'Room Type: Family Room'
+                                            price:'$50'
+                                            size_hint:(1,None)
+                                            height:mtx.dp(100)
+                                        BestRoom:
+                                            rooms_number:'Room Number: 102'
+                                            room_type:'Room Type: Superior Room'
+                                            price:'$60'
+                                            size_hint:(1,None)
+                                            height:mtx.dp(100)
+                                        BestRoom:
+                                            rooms_number:'Room Number: 103'
+                                            room_type:'Room Type: Deluxe Room'
+                                            price:'$40'
+                                            size_hint:(1,None)
+                                            height:mtx.dp(100)
+                                        BestRoom:
+                                            rooms_number:'Room Number: 104'
+                                            room_type:'Room Type: Double Bed Room'
+                                            price:'$80'
+                                            size_hint:(1,None)
+                                            height:mtx.dp(100)
+
+
+
+        Screen:
+            name:'scrn_today'
+            BoxLayout:
+                orientation:'vertical'
+                BoxLayout:
+                    size_hint_y:.07
+                    padding:[mtx.dp(15),mtx.dp(5)]
+                    FlatButton:
+                        text:icon('zmdi-arrow-back')
+                        markup:True
+                        color:rgba('#0e1574ff')
+                        font_size:mtx.dp(18)
+                        text_size:self.size
+                        valign:'middle'
+                        size_hint_x:.7
+                        on_release:scrn_mngr.current = 'scrn_main'
+                    Label:
+                        text:'All Reservation Info'
+                        size_hint_x:.7
+                        text_size:self.size
+                        halign:'right'
+                        valign:'middle'
+                        color:rgba('#0e5174')
+                        bold:True
+                BoxLayout:
+                    size_hint_y:.93
+                    ScrollView:
+                        size_hint_y:None
+                        height:self.parent.height
+                        GridLayout:
+                            id:all_today
+                            cols:2
+                            size_hint_y:None
+                            size:self.minimum_size
+                            padding:mtx.dp(10)
+                            spacing:mtx.dp(10)
+<ListEntry@FlatButton>:
+    text_size:self.size
+    valign:'middle'
+    canvas.before:
+        Color:
+            rgba:rgba('#dfdfdf')
+        Rectangle:
+            pos:self.pos
+            size:self.size
+<NewTask>:
+    size_hint:[.9,.6]
+    BoxLayout:
+        orientation:'vertical'
+        spacing:'12dp'
+        padding:'10dp'
+        canvas.before:
+            Color:
+                rgba:[1,1,1,1]
+            RoundedRectangle:
+                pos:self.pos
+                size:self.size
+                radius:[5]
+        BoxLayout:
+            size_hint_y:.3
+            padding:'4dp'
+            FlatInput:
+                id:task_rooms
+                hint_text:'Guest Name'
+                hint_text_color:rgba('#0e1574ff')
+
+        BoxLayout:
+            id:datetime1
+            size_hint_y:.3
+            padding:'4dp'
+            DatePicker:
+                id:task_date1
+                text:'check In Time'
+                size_hint_x:.3
+                background_active:''
+                background_normal:''
+                background_color:[1,1,1,0]
+                canvas.before:
+                    Color:
+                        rgba:rgba('#0e1574ff')
+                    Rectangle:
+                        pos:self.pos
+                        size:[self.size[0], 1]
+            FlatButton:
+                id:task_checkin
+                text:'00:00:00'
+                color:rgba('#0e1574')
+                size_hint_x:.3
+                on_release:root.get_time()
+
+        BoxLayout:
+            id:datetime2
+            size_hint_y:.3
+            padding:'4dp'
+            DatePicker:
+                id:task_date2
+                text:'check Out Time'
+                size_hint_x:.3
+                background_active:''
+                background_normal:''
+                background_color:[1,1,1,0]
+                canvas.before:
+                    Color:
+                        rgba:rgba('#0e1574ff')
+                    Rectangle:
+                        pos:self.pos
+                        size:[self.size[0], 1]
+            FlatButton:
+                id:task_checkout
+                text:'00:00:00'
+                color:rgba('#0e1574')
+                size_hint_x:.3
+                on_release:root.get_time2()
+        BoxLayout:
+            size_hint_y:.3
+            padding:'4dp'
+            FlatInput:
+                id:task_room_type
+                hint_text:'Room Type'
+                hint_text_color:rgba('#0e1574ff')
+        BoxLayout:
+            size_hint_y:.3
+            padding:'4dp'
+            FlatInput:
+                id:task_adults
+                hint_text:'Number of Adults'
+                hint_text_color:rgba('#0e1574ff')
+        BoxLayout:
+            size_hint_y:.3
+            padding:'4dp'
+            FlatInput:
+                id:task_child
+                hint_text:'Number of Children'
+                hint_text_color:rgba('#0e1574ff')
+        BoxLayout:
+            id:submit_wrapper
+            size_hint_y:.24
+            FlatButton:
+                text:'Reserve'
+
+                on_release:app.root.add_task(root,(task_rooms,task_date1,task_checkin,task_date2,task_checkout,task_room_type,task_adults,task_child))
+                canvas.before:
+                    Color:
+                        rgba:rgba('#0e1574ff')
+                    RoundedRectangle:
+                        pos:self.pos
+                        size:self.size
+
+<BestRoom>:
+    orientation:'vertical'
+    padding:[mtx.dp(30),mtx.dp(10),mtx.dp(10),mtx.dp(8)]
+    canvas.before:
+        Color:
+            rgba:rgba('#0088aafd')
+        RoundedRectangle:
+            pos:self.pos
+            size:self.size
+            radius:[0,mtx.dp(25),0,0]
+        Color:
+            rgba:rgba('#aa0088ff')
+        Rectangle:
+            pos:self.pos
+            size:[self.size[0]-(.95*self.size[0]),self.size[1]]
+    Label:
+        text:root.rooms_number
+        bold:True
+        text_size:self.size
+        valign:'middle'
+        color:rgba('#000000')
+        size_hint_y:.4
+        font_size:mtx.sp(18)
+
+    Label:
+        text:root.room_type
+        bold:True
+        text_size:self.size
+        valign:'middle'
+        color:rgba('#000000')
+        size_hint_y:.3
+        font_size:mtx.sp(14)
+    Label:
+        text:root.facility
+        bold:True
+        text_size:self.size
+        valign:'middle'
+        color:rgba('#000000')
+        size_hint_y:.2
+        font_size:mtx.sp(14)
+    Label:
+        text:root.price
+        bold:True
+        text_size:self.size
+        valign:'middle'
+        color:rgba('#000000')
+        size_hint_y:.2
+        font_size:mtx.sp(14)
+    AnchorLayout:
+        size_hint_y:.4
+        anchor_x:'right'
+        anchor_y:'bottom'
+        BoxLayout:
+            size_hint_x:.4
+            FlatButton:
+                text:icon('zmdi-refresh')
+                font_size:mtx.sp(18)
+                markup:True
+            FlatButton:
+                text:icon('zmdi-delete')
+                font_size:mtx.sp(18)
+                markup:True
+
+<Today>:
+    orientation:'vertical'
+    padding:mtx.dp(15)
+    canvas.before:
+        Color:
+            rgba:rgba('#ff9955ff')
+        RoundedRectangle:
+            pos:self.pos
+            size:self.size
+            radius:[20]
+    Label:
+        id: task_rooms
+        text:root.rooms+'(Room Num)'
+        bold:True
+        size_hint_y:.3
+        color:rgba('#4a4a4a')
+        text_size:self.size
+        shorten:True
+        shorten_from:'right'
+        halign:'right'
+    Label:
+        id: task_room_type
+        text:root.room_type+'(Room)'
+        bold:True
+        size_hint_y:.3
+        color:rgba('#4a4a4a')
+        text_size:self.size
+        shorten:True
+        shorten_from:'right'
+        halign:'right'
+    BoxLayout:
+        size_hint_y:.4
+        Label:
+            text:icon('zmdi-time-countdown')
+            markup:True
+            size_hint_x:.3
+            text_size:self.size
+            halign:'right'
+            color:rgba('#4a4a4a')
+        Label:
+            id: task_checkin
+            text:root.checkin
+            size_hint_x:.4
+            text_size:self.size
+            halign:'right'
+            color:rgba('#4a4a4a')
+
+
+    AnchorLayout:
+        anchor_x:'right'
+        anchor_y:'bottom'
+        size_hint_y:.75
+        BoxLayout:
+            size_hint_x:.5
+            FlatButton:
+                text:icon('zmdi-refresh')
+                font_size:'24sp'
+                markup:True
+                color:rgba('#4a4a4a')
+                on_release:app.root.get_update(root)
+            FlatButton:
+                text:icon('zmdi-delete')
+                font_size:'24sp'
+                markup:True
+                color:rgba('#4a4a4a')
+                on_release:app.root.delete_task(root)
+<ViewTask>:
+    size_hint:[.7,.7]
+    BoxLayout:
+        orientation:'vertical'
+        canvas.before:
+            Color:
+                rgba:[1,1,1,1]
+            RoundedRectangle:
+                pos:self.pos
+                size:self.size
+                radius:[mtx.dp(10)]
+        BoxLayout:
+            size_hint_y:.1
+        TextInput:
+            id:rooms
+            background_disabled_normal:''
+            background_color:[0,0,0,0]
+            disabled_foreground_color:rgba('#0e5174')
+            disabled:True
+            size_hint_y:.3
+        BoxLayout:
+            size_hint_y:.3
+            orientation:'vertical'
+            BoxLayout:
+                orientation:'vertical'
+                Label:
+                    test:'CheckIn'
+                    bold:True
+                    color:rgba('#0e5174')
+                    size_hint_x:.3
+                    text_size:self.size
+                    valign:'middle'
+                Label:
+                    id:checkin
+                    color:rgba('#0e5174')
+                    size_hint_x:.8
+                    text_size:self.size
+                    valign:'middle'
+            BoxLayout:
+                Label:
+                    test:'Date1'
+                    bold:True
+                    color:rgba('#0e5174')
+                    size_hint_x:.3
+                    text_size:self.size
+                    valign:'middle'
+                Label:
+                    id:date1
+                    color:rgba('#0e5174')
+                    size_hint_x:.8
+                    text_size:self.size
+                    valign:'middle'
+        BoxLayout:
+            size_hint_y:.3
+            orientation:'vertical'
+            BoxLayout:
+                orientation:'vertical'
+                Label:
+                    test:'CheckOut'
+                    bold:True
+                    color:rgba('#0e5174')
+                    size_hint_x:.3
+                    text_size:self.size
+                    valign:'middle'
+                Label:
+                    id:checkout
+                    color:rgba('#0e5174')
+                    size_hint_x:.8
+                    text_size:self.size
+                    valign:'middle'
+            BoxLayout:
+                Label:
+                    test:'Date2'
+                    bold:True
+                    color:rgba('#0e5174')
+                    size_hint_x:.3
+                    text_size:self.size
+                    valign:'middle'
+                Label:
+                    id:date2
+                    color:rgba('#0e5174')
+                    size_hint_x:.8
+                    text_size:self.size
+                    valign:'middle'
+        TextInput:
+            id:room_type
+            background_disabled_normal:''
+            background_color:[0,0,0,0]
+            disabled_foreground_color:rgba('#0e5174')
+            disabled:True
+            size_hint_y:.2
+        TextInput:
+            id:NumOfAdults
+            background_disabled_normal:''
+            background_color:[0,0,0,0]
+            disabled_foreground_color:rgba('#0e5174')
+            disabled:True
+            size_hint_y:.2
+        TextInput:
+            id:NumOfChild
+            background_disabled_normal:''
+            background_color:[0,0,0,0]
+            disabled_foreground_color:rgba('#0e5174')
+            disabled:True
+            size_hint_y:.7
+
+
+<NewButton>:
+    canvas.before:
+        Color:
+            rgba:rgba('#ff9955c8')
+        RoundedRectangle:
+            pos:self.pos
+            size:self.size
+            radius:[20]
+    Label:
+        text:icon('zmdi-plus')
+        font_size:mtx.sp(56)
+        markup:True
+
+<FlatButton@Button>:
+    background_normal:''
+    background_color:[1,1,1,0]
+<FlatInput@TextInput>:
+    background_active:''
+    background_normal:''
+    background_color:[1,1,1,0]
+    canvas.before:
+        Color:
+            rgba:rgba('#0e1574ff')
+        Rectangle:
+            pos:self.pos
+            size:[self.size[0], 1]
+
+<WhiteInput@TextInput>:
+    background_active:''
+    background_normal:''
+    background_color:[1,1,1,0]
+    canvas.before:
+        Color:
+            rgba:rgba('#ffffff')
+        Rectangle:
+            pos:self.pos
+            size:[self.size[0], 1]
